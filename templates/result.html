@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Result - Fish Counting App{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card p-4 shadow mb-4">
+      <h2 class="text-center mb-3">Prediction Result</h2>
+      <p class="text-center lead">Our model has detected <strong>{{ total_fish }}</strong> fish in your image.</p>
+      <div class="text-center mb-4">
+        <img src="{{ url_for('predicted_file', filename=predicted_image) }}" alt="Predicted Image" class="img-fluid rounded" style="max-height: 500px;">
+      </div>
+      <div class="text-center">
+        <a href="{{ url_for('index') }}" class="btn btn-secondary btn-lg">Upload Another Image</a>
+      </div>
+    </div>
+
+    <!-- Additional Information -->
+    <div class="card p-4 shadow">
+      <h4 class="mb-3">How It Works</h4>
+      <p>This application uses advanced YOLOv8 architecture to detect and count fish in your images. The model has been meticulously trained on a diverse dataset of 13 fish species to ensure accuracy even in challenging underwater environments.</p>
+      <p>For best results, please use images that are clear and well-lit. If the prediction does not look correct, try using a higher-quality image or adjusting the conditions.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
