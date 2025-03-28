@@ -37,7 +37,7 @@ A professional web application built with Flask and YOLOv8 for detecting and cou
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/Muhammad-waqas1/fish-counting-app.git
+   git clone https://github.com/Muhammad-waqas1/Fish_Counting_System--Image_Based_Fish_Detection.git
    cd fish-counting-app
 
 2. **Create and activate a virtual environment:**
@@ -107,9 +107,12 @@ This project leverages the YOLOv8 architecture for underwater object detection. 
 
 ## Meet the Team
 
-- **Muhammad Waqas**  
+- **Muhammad Waqas**
+  
   Sole creator and developer of this project. Passionate about computer vision and marine biology.  
-  Connect on: [GitHub](https://github.com/Muhammad-waqas1) | [Kaggle](https://www.kaggle.com/waqas010)
+  Connect on:  
+  - [GitHub](https://github.com/Muhammad-waqas1)  
+  - [Kaggle](https://www.kaggle.com/waqas010)  
 
 ## License
 
@@ -117,7 +120,7 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## Issues
 
-If you encounter any issues or have suggestions for improvements, please feel free to [open an issue](https://github.com/Muhammad-waqas1/fish-counting-app/issues) on GitHub.
+If you encounter any issues or have suggestions for improvements, please feel free to [open an issue](https://github.com/Muhammad-waqas1/Fish_Counting_System--Image_Based_Fish_Detection/issues) on GitHub.
 
 
 ----
