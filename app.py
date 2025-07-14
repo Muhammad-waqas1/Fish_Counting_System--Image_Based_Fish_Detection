@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, send_from_
 import os
 import cv2
 from ultralytics import YOLO
+from datetime import datetime
+from collections import Counter
 
 # Initialize the Flask app
 app = Flask(__name__)
@@ -37,25 +39,57 @@ def index():
         if file.filename == '':
             return "No selected file", 400
         if file:
-            # Save the uploaded file
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+            filename = file.filename
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(file_path)
 
-            # Run prediction on the saved image
-            results = model.predict(source=file_path, imgsz=640, conf=0.3, iou=0.5)
+            # Run YOLOv8 prediction
+            results = model.predict(source=file_path, imgsz=640, conf=0.6, iou=0.5)
             detections = results[0]
-            total_fish = len(detections.boxes)
+
+
+            # Filter detections by confidence threshold
+            conf_threshold = 0.6
+            filtered_indices = [i for i, conf in enumerate(detections.boxes.conf) if conf > conf_threshold]
+
+            # If no detections meet the threshold
+            if not filtered_indices:
+                total_fish = 0
+                species_counts = {}
+            else:
+                filtered_boxes = detections.boxes[filtered_indices]
+                class_ids = filtered_boxes.cls.cpu().numpy().astype(int)
+                labels = model.names
+                species_counts = dict(Counter([labels[cid] for cid in class_ids]))
+                total_fish = len(filtered_boxes)
+
+                # Update the detections object with filtered boxes (optional, for plotting)
+                detections.boxes = filtered_boxes
+
+
+            # Save annotated image
+            annotated_image = detections.plot()
+            output_path = os.path.join(app.config['PREDICTIONS_FOLDER'], filename)
+            cv2.imwrite(output_path, annotated_image)
+
+            # Timestamp
+            timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+            print("Species counts:", species_counts)
+            print("Detections before filtering:", len(detections.boxes))
+            print("Filtered detections:", total_fish)
+
+            return render_template(
+                'result.html',
+                total_fish=total_fish,
+                predicted_image=filename,
+                original_image=filename,
+                species_counts=species_counts,
+                timestamp=timestamp
+            )
             
-            # Annotate the image (YOLOv8 provides a .plot() method to draw boxes on the image)
-            annotated_image = detections.plot()  # returns a numpy array with drawn predictions
-
-            # Save the annotated image to the predictions folder
-            output_image_path = os.path.join(app.config['PREDICTIONS_FOLDER'], file.filename)
-            cv2.imwrite(output_image_path, annotated_image)
-
-            # Render the result template with the count and file name
-            return render_template('result.html', total_fish=total_fish, predicted_image=file.filename)
     return render_template('index.html')
+
+
 
 # Routes to serve the uploaded and predicted images
 @app.route('/uploads/<filename>')

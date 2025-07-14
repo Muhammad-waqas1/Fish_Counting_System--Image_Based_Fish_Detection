@@ -1,56 +1,81 @@
 {% extends "base.html" %}
 {% block title %}Home - Fish Counting App{% endblock %}
 {% block content %}
+
 <!-- Hero Section -->
-<div class="row mb-5">
-  <div class="col-md-12 text-center">
-    <div class="py-5">
-      <h1 class="display-4 fw-bold">Welcome to Fish Counting App</h1>
-      <p class="lead">Harnessing the power of computer vision to monitor marine life with precision and ease.</p>
-      <hr class="my-4" style="max-width: 50%; border-top: 2px solid rgba(255,255,255,0.5); margin:auto;">
-      <p>Our state-of-the-art underwater object detection model recognizes 13 different fish species in your underwater images.</p>
-      <a href="#upload-section" class="btn btn-lg btn-primary">Get Started</a>
-    </div>
-  </div>
+<div class="text-center mb-5">
+  <h1 class="display-5 fw-bold">Welcome to Fish Counting App</h1>
+  <p class="lead mt-3">YOLOv8-based fish species detection in underwater images.</p>
+  <hr class="custom" />
+  <p>Detect 13 species in real-time from your images with precision.</p>
+  <a href="#upload-section" class="btn btn-primary btn-lg mt-3 px-5">Get Started</a>
 </div>
 
-<!-- Features Section -->
-<div class="row mb-5">
-  <div class="col-md-4">
-    <div class="card p-3 h-100">
-      <h3 class="card-title">Advanced Detection</h3>
-      <p class="card-text">Utilizing YOLOv8 for rapid and accurate detection of underwater species.</p>
+<!-- Features -->
+<div class="row text-center mb-5">
+  <div class="col-md-4 mb-4">
+    <div class="card p-4 h-100">
+      <h4>🚀 Fast Detection</h4>
+      <p>Real-time YOLOv8 predictions on underwater datasets.</p>
     </div>
   </div>
-  <div class="col-md-4">
-    <div class="card p-3 h-100">
-      <h3 class="card-title">Easy to Use</h3>
-      <p class="card-text">Simply upload an image and get instant results with annotated detections and counts.</p>
+  <div class="col-md-4 mb-4">
+    <div class="card p-4 h-100">
+      <h4>🔍 Species Recognition</h4>
+      <p>13 fish species with high-accuracy bounding box detection.</p>
     </div>
   </div>
-  <div class="col-md-4">
-    <div class="card p-3 h-100">
-      <h3 class="card-title">Insightful Analytics</h3>
-      <p class="card-text">Receive detailed information on the number of fish detected to support research and analysis.</p>
+  <div class="col-md-4 mb-4">
+    <div class="card p-4 h-100">
+      <h4>📊 Fish Count Stats</h4>
+      <p>Summarized insights after detection for research use.</p>
     </div>
   </div>
 </div>
 
 <!-- Upload Section -->
-<div id="upload-section" class="row justify-content-center mb-5">
+<div id="upload-section" class="row justify-content-center">
   <div class="col-md-8">
-    <div class="card p-4 shadow">
-      <h2 class="text-center mb-4">Upload an Image for Fish Counting</h2>
+    <div class="card p-5">
+      <h2 class="text-center mb-4">Upload Image</h2>
       <form method="POST" action="/" enctype="multipart/form-data">
-        <div class="mb-3">
-          <label for="file-upload" class="form-label">Choose an underwater image (JPG, JPEG, PNG, etc.)</label>
+        <div class="mb-4">
+          <label for="file-upload" class="form-label">Choose underwater image (JPG, PNG, etc.):</label>
           <input id="file-upload" class="form-control" type="file" name="image" accept="image/*" required>
         </div>
         <div class="d-grid">
-          <button type="submit" class="btn btn-primary btn-lg">Upload and Predict</button>
+          <button type="submit" class="btn btn-primary btn-lg">Upload & Analyze</button>
         </div>
       </form>
     </div>
   </div>
 </div>
+
+
+<!-- Loading Spinner Overlay -->
+<div id="loading-overlay" style="
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    display: none;
+">
+  <div class="spinner-border text-light" style="width: 4rem; height: 4rem;" role="status">
+    <span class="visually-hidden">Processing...</span>
+  </div>
+  <div class="text-light ms-3 fs-4">Detecting fish, please wait...</div>
+</div>
+
+
+<script>
+  document.querySelector('form').addEventListener('submit', function () {
+    document.getElementById('loading-overlay').style.display = 'flex';
+  });
+</script>
+
 {% endblock %}
+
