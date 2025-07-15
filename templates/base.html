@@ -5,72 +5,100 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% block title %}Fish Counting App{% endblock %}</title>
+
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/fish_favicon.png') }}">
+    <link rel="icon" href="{{ url_for('static', filename='assets/fish_favicon.png') }}" />
+
+    <!-- AOS Animations -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
 
     <style>
         body {
-            background-color: #0a192f;
-            color: #ccd6f6;
+            background-color: #f0f4f8;
+            color: #1e293b;
             font-family: 'Inter', sans-serif;
         }
 
         .navbar {
-            background-color: #112240;
-            padding: 0.8rem 1rem;
+            background-color: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            padding: 1rem 0;
         }
 
         .navbar-brand {
-            color: #38bdf8;
-            font-weight: 600;
-            font-size: 1.4rem;
-        }
-
-        .navbar-brand:hover,
-        .nav-link:hover {
-            color: #00ffff !important;
+            color: #2563eb;
+            font-weight: 700;
+            font-size: 1.6rem;
         }
 
         .nav-link {
-            color: #ccd6f6 !important;
+            color: #1e293b !important;
             font-weight: 500;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -3px;
+            width: 0%;
+            height: 2px;
+            background-color: #38bdf8;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
         }
 
         .card {
-            background-color: #112240;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: #ccd6f6;
+            background-color: #ffffff;
             border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            border: none;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
         }
 
         .btn-primary {
-            background-color: #38bdf8;
+            background: linear-gradient(to right, #38bdf8, #2563eb);
             border: none;
             font-weight: 600;
         }
 
         .btn-primary:hover {
-            background-color: #00ffff;
-            color: #0a192f;
+            background: linear-gradient(to right, #2563eb, #38bdf8);
         }
 
         .footer {
-            background-color: #112240;
-            color: #8892b0;
-            padding: 1rem 0;
-            font-size: 0.9rem;
+            background-color: #f8fafc;
+            color: #64748b;
+            padding: 2rem 0;
+            font-size: 0.95rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .footer a {
+            color: #2563eb;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .footer a:hover {
+            color: #1d4ed8;
         }
 
         hr.custom {
-            border-top: 2px solid rgba(255, 255, 255, 0.1);
+            border-top: 2px solid rgba(0, 0, 0, 0.1);
             width: 60%;
             margin: 2rem auto;
-        }
-
-        .fade-in {
-            animation: fadeIn 0.9s ease-in-out;
         }
 
         @keyframes fadeIn {
@@ -84,13 +112,136 @@
                 transform: translateY(0);
             }
         }
+
+
+        /* Timeline List */
+        .timeline {
+            list-style: none;
+            padding-left: 0;
+            border-left: 3px solid #38bdf8;
+            padding-left: 20px;
+        }
+
+        .timeline li {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .timeline li::before {
+            content: "";
+            width: 12px;
+            height: 12px;
+            background-color: #38bdf8;
+            border-radius: 50%;
+            position: absolute;
+            left: -27px;
+            top: 5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #38bdf8, #007BFF);
+            border: none;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.4s ease;
+            z-index: 1;
+        }
+
+        .btn-primary:hover::before {
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(56, 189, 248, 0.4);
+            color: #fff;
+        }
+
+        .btn-outline-primary {
+            border: 2px solid #007BFF;
+            color: #007BFF;
+            background: transparent;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-primary:hover {
+            background: #007BFF;
+            color: #fff;
+            box-shadow: 0 8px 16px rgba(0, 123, 255, 0.3);
+        }
+
+        /* Upload button hover */
+        input[type="file"]::file-selector-button {
+            background: linear-gradient(135deg, #38bdf8, #007BFF);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            box-shadow: 0 5px 15px rgba(56, 189, 248, 0.4);
+            transform: scale(1.05);
+        }
+
+        [data-aos] {
+            transition-property: opacity, transform;
+            transition-duration: 0.8s;
+            transition-timing-function: ease;
+        }
+
+        /* GitHub btn*/
+        .btn-outline-primary:focus,
+        .btn-outline-primary:active {
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.4);
+        }
+
+        .animated-heading {
+            background: linear-gradient(90deg, #3798ff, #38f838, #ff1e00);
+            background-size: 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 5s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 0%
+            }
+
+            100% {
+                background-position: 300%
+            }
+        }
     </style>
     {% block head %}{% endblock %}
 </head>
 
+
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg">
         <div class="container">
             <a class="navbar-brand" href="/">Fish Counting App</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -106,22 +257,29 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <div class="container my-5 fade-in">
+    <!-- Page Content -->
+    <div class="container my-5 fade-in" data-aos="fade-up" data-aos-duration="1000">
         {% block content %}{% endblock %}
     </div>
 
     <!-- Footer -->
-    <footer class="footer text-center">
-        <div class="container">
-            <p>&copy; 2025 Fish Counting App. All rights reserved.</p>
+    <footer class="footer">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <p class="mb-2 mb-md-0">&copy; 2025 Fish Counting App. Built by Waqas & Team.</p>
+            <div>
+                <a href="/about" class="me-3">About</a>
+                <a href="/contact" class="me-3">Contact</a>
+                <a href="https://github.com/Muhammad-waqas1" target="_blank" class="me-3">GitHub</a>
+                <a href="https://www.kaggle.com/waqas010" target="_blank">Kaggle</a>
+            </div>
         </div>
     </footer>
 
-    <!-- Bootstrap JS -->
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>AOS.init({ once: true, duration: 1000 });</script>
 
     {% block scripts %}{% endblock %}
 </body>

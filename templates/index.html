@@ -2,54 +2,79 @@
 {% block title %}Home - Fish Counting App{% endblock %}
 {% block content %}
 
-<!-- Hero Section -->
-<div class="text-center mb-5">
-  <h1 class="display-5 fw-bold">Welcome to Fish Counting App</h1>
-  <p class="lead mt-3">YOLOv8-based fish species detection in underwater images.</p>
-  <hr class="custom" />
-  <p>Detect 13 species in real-time from your images with precision.</p>
-  <a href="#upload-section" class="btn btn-primary btn-lg mt-3 px-5">Get Started</a>
-</div>
+<!-- 🔹 Hero Section -->
+<section class="py-5 text-center">
+  <div class="container">
+    <h1 class="display-4 fw-bold animated-heading" data-aos="fade-down">
+  Fish Counting System
+  </h1>
 
-<!-- Features -->
-<div class="row text-center mb-5">
-  <div class="col-md-4 mb-4">
-    <div class="card p-4 h-100">
-      <h4>🚀 Fast Detection</h4>
-      <p>Real-time YOLOv8 predictions on underwater datasets.</p>
-    </div>
+    <p class="lead text-secondary" data-aos="fade-up">
+      A computer vision-based system for underwater fish detection using YOLOv8.
+    </p>
+    <a href="/about" class="btn btn-primary btn-lg mt-3" data-aos="zoom-in">Learn More</a>
   </div>
-  <div class="col-md-4 mb-4">
-    <div class="card p-4 h-100">
-      <h4>🔍 Species Recognition</h4>
-      <p>13 fish species with high-accuracy bounding box detection.</p>
-    </div>
-  </div>
-  <div class="col-md-4 mb-4">
-    <div class="card p-4 h-100">
-      <h4>📊 Fish Count Stats</h4>
-      <p>Summarized insights after detection for research use.</p>
-    </div>
-  </div>
-</div>
+</section>
 
-<!-- Upload Section -->
-<div id="upload-section" class="row justify-content-center">
-  <div class="col-md-8">
-    <div class="card p-5">
-      <h2 class="text-center mb-4">Upload Image</h2>
-      <form method="POST" action="/" enctype="multipart/form-data">
-        <div class="mb-4">
-          <label for="file-upload" class="form-label">Choose underwater image (JPG, PNG, etc.):</label>
-          <input id="file-upload" class="form-control" type="file" name="image" accept="image/*" required>
-        </div>
-        <div class="d-grid">
-          <button type="submit" class="btn btn-primary btn-lg">Upload & Analyze</button>
-        </div>
-      </form>
+<!-- 🔹 Upload Image Section -->
+<section id="upload_img" class="py-5 bg-white border-top">
+  <div class="container text-center">
+    <h2 class="mb-4 text-dark" data-aos="fade-right">Upload an Image</h2>
+    <p class="mb-4 text-muted" data-aos="fade-up">Analyze your underwater image and detect fish species instantly (JPG, PNG, etc.):</p>
+    <form action="/" method="POST" enctype="multipart/form-data" class="mx-auto" style="max-width: 600px;" data-aos="fade-up">
+      <input type="file" name="image" class="form-control form-control-lg mb-3" accept="image/*" required>
+      <button type="submit" class="btn btn-primary btn-lg px-4">Upload & Detect</button>
+    </form>
+  </div>
+</section>
+
+<!-- 🔹 Features -->
+<section class="py-5 border-top">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-4 mb-4" data-aos="fade-up">
+        <h4 class="text-dark">🎯 Smart Detection</h4>
+        <p class="text-muted">YOLOv8 trained on 13 fish species for precise underwater object detection.</p>
+      </div>
+      <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+        <h4 class="text-dark">📊 Interactive Results</h4>
+        <p class="text-muted">Visual breakdown of detected species using clean, responsive charts.</p>
+      </div>
+      <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+        <h4 class="text-dark">🌐 Use Cases</h4>
+        <p class="text-muted">Marine research, fisheries, conservation, and CV-based automation.</p>
+      </div>
     </div>
   </div>
-</div>
+</section>
+
+<!-- 🔹 GitHub Link -->
+<section class="py-5 bg-light border-top">
+  <div class="container text-center" data-aos="zoom-in">
+    <h3 class="text-dark">🔗 View Source Code</h3>
+    <p class="text-muted">Check out the GitHub repo for training pipeline and deployment code:</p>
+    <a href="https://github.com/Muhammad-waqas1/Fish_Counting_System--Image_Based_Fish_Detection"
+       class="btn btn-outline-primary btn-lg"
+       target="_blank">
+      Visit GitHub Repository
+    </a>
+  </div>
+</section>
+
+<!-- 🔹 Kaggle Notebook Link -->
+<section class="py-5 bg-light border-top mt-5">
+  <div class="container text-center" data-aos="zoom-in">
+    <h3 class="text-dark">📘 Explore Model Training Notebook</h3>
+    <p class="text-muted">
+      Dive deep into the YOLOv8 training pipeline, dataset handling, and evaluation in our official Kaggle notebook:
+    </p>
+    <a href="https://www.kaggle.com/code/waqas010/fish-counting-systemfyp/notebook"
+       class="btn btn-outline-primary btn-lg"
+       target="_blank">
+      View on Kaggle
+    </a>
+  </div>
+</section>
 
 
 <!-- Loading Spinner Overlay -->
@@ -77,5 +102,5 @@
   });
 </script>
 
-{% endblock %}
 
+{% endblock %}

@@ -1,64 +1,111 @@
 {% extends "base.html" %}
 {% block title %}About - Fish Counting App{% endblock %}
+
 {% block content %}
 <div class="card p-4">
   <h2 class="mb-4">About This Model</h2>
   <p>
-    This dataset is designed for underwater object detection and fish object detection. The model has been trained to recognize 13 fish species, making it useful for various applications including:
+    This system was built to perform real-time underwater fish detection and counting. It uses a custom-trained YOLOv8 model to recognize 13 different fish species in varied aquatic environments, making it highly useful for research, monitoring, and prototyping in marine biology and computer vision.
   </p>
+
+  <p><strong>Use Cases:</strong></p>
   <ul>
-    <li>Underwater object detection systems</li>
-    <li>Fish object detection models</li>
-    <li>Prototyping fish detection systems using computer vision</li>
-    <li>Research in marine biology and underwater ecosystems</li>
+    <li>Fish population monitoring</li>
+    <li>Real-time underwater surveillance</li>
+    <li>Marine biology and academic research</li>
+    <li>Computer vision model prototyping</li>
   </ul>
-  <p>
-    <strong>Dataset Features:</strong>
-  </p>
+
+  <p><strong>Species Recognized:</strong></p>
   <ul>
-    <li>Free fish dataset for underwater object detection</li>
-    <li>Free fish identification dataset</li>
-    <li>Species included:
-      <ul>
-        <li>Acanthuridae - Surgeonfishes</li>
-        <li>Balistidae - Triggerfishes</li>
-        <li>Carangidae - Jacks</li>
-        <li>Ephippidae - Spadefishes</li>
-        <li>Labridae - Wrasse</li>
-        <li>Lutjanidae - Snappers</li>
-        <li>Pomacanthidae - Angelfishes</li>
-        <li>Pomacentridae - Damselfishes</li>
-        <li>Scaridae - Parrotfishes</li>
-        <li>Scombridae - Tunas</li>
-        <li>Serranidae - Groupers</li>
-        <li>Shark - Selachimorpha</li>
-        <li>Zanclidae - Moorish Idol</li>
-      </ul>
-    </li>
+    <li>Acanthuridae (Surgeonfishes)</li>
+    <li>Balistidae (Triggerfishes)</li>
+    <li>Carangidae (Jacks)</li>
+    <li>Ephippidae (Spadefishes)</li>
+    <li>Labridae (Wrasses)</li>
+    <li>Lutjanidae (Snappers)</li>
+    <li>Pomacanthidae (Angelfishes)</li>
+    <li>Pomacentridae (Damselfishes)</li>
+    <li>Scaridae (Parrotfishes)</li>
+    <li>Scombridae (Tunas)</li>
+    <li>Serranidae (Groupers)</li>
+    <li>Selachimorpha (Sharks)</li>
+    <li>Zanclidae (Moorish Idol)</li>
   </ul>
+
+  <hr class="custom" />
+
+  <h4>📘 Model Training Overview</h4>
   <p>
-    <strong>Model Training:</strong> The model was trained using the YOLOv8 architecture, optimized with state-of-the-art techniques and data augmentation strategies. Training was conducted over multiple epochs on a carefully curated dataset to ensure robustness in various underwater conditions.
+    The model was trained using the <strong>YOLOv8 Large</strong> architecture provided by Ultralytics. The full training workflow is open-sourced and available at:
+    <a href="https://www.kaggle.com/code/waqas010/fish-counting-systemfyp/notebook" target="_blank">
+      Fish Counting System (Kaggle Notebook)
+    </a>.
   </p>
+
+  <p><strong>Technical Details:</strong></p>
+  <ul>
+    <li>👨‍💻 Model: <code>YOLOv8l.pt</code> pretrained weights</li>
+    <li>📁 Dataset defined in a custom <code>data.yaml</code> file</li>
+    <li>🧠 Training Epochs: 50</li>
+    <li>📐 Image Size: 640×640</li>
+    <li>⚙️ Batch Size: 16</li>
+    <li>🧵 Workers: 8</li>
+    <li>💾 Weights Saved Every 10 Epochs</li>
+  </ul>
+
+  <p><strong>Training Code Summary:</strong></p>
+  <pre class="bg-dark text-light p-3 rounded small">
+from ultralytics import YOLO
+
+# Load base model
+model = YOLO("yolov8l.pt")
+
+# Train on custom dataset
+model.train(data="data.yaml", epochs=50, imgsz=640, batch=16, workers=8, save_period=10)
+  </pre>
+
+  <p><strong>Model Usage:</strong> After training, the best weights (<code>best.pt</code>) are loaded to perform predictions on test images with a confidence threshold of 0.3 and IoU of 0.5.</p>
+
+  <pre class="bg-dark text-light p-3 rounded small">
+model = YOLO('runs/detect/train/weights/best.pt')
+results = model.predict(source='Test_Images/Fish1.jpg', imgsz=640, conf=0.3, iou=0.5)
+  </pre>
+
   <p>
-    This model is ideal for applications ranging from underwater monitoring and marine research to prototyping advanced computer vision systems for aquatic environments.
+    The number of fish is counted using the <code>len(detections.boxes)</code> and results are saved and visualized using OpenCV.
   </p>
 </div>
 
-
-
+<!-- Team Section -->
 <div class="card p-4 mt-5">
-    <h2 class="mb-4">Meet the Team</h2>
-    <div class="row align-items-center">
-      <div class="col-md-3 text-center">
-        <!-- Replace with your profile picture URL if available -->
-        <img src="https://via.placeholder.com/150" class="img-fluid rounded-circle mb-3" alt="Muhammad Waqas">
-      </div>
-      <div class="col-md-9">
-        <h4>Muhammad Waqas</h4>
-        <p>
-          Muhammad Waqas is the sole creator and developer of this project. With expertise in computer vision and a passion for marine biology, he has built this application to facilitate underwater object detection and fish counting.
-        </p>
+  <h2 class="mb-4">Meet the Team</h2>
+  <div class="row g-4">
+
+    <div class="col-md-4">
+      <div class="h-100 p-3 border rounded bg-dark text-light">
+        <h4 class="mb-1">Muhammad Waqas</h4>
+        <p class="text-info mb-1">Project Lead / Machine Learning Engineer</p>
+        <p class="mb-0">Spearheaded model development, dataset preparation, training workflow, and model deployment using YOLOv8.</p>
       </div>
     </div>
+
+    <div class="col-md-4">
+      <div class="h-100 p-3 border rounded bg-dark text-light">
+        <h4 class="mb-1">Furqan Askri</h4>
+        <p class="text-info mb-1">Documentation Lead</p>
+        <p class="mb-0">Authored technical documentation, reports, and ensured project milestones were properly recorded and reported.</p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="h-100 p-3 border rounded bg-dark text-light">
+        <h4 class="mb-1">Waseem Raza</h4>
+        <p class="text-info mb-1">Frontend Developer</p>
+        <p class="mb-0">Designed and implemented a clean, responsive UI that enables users to interact with the model results seamlessly.</p>
+      </div>
+    </div>
+
   </div>
-  {% endblock %}
+</div>
+{% endblock %}

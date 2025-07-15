@@ -2,124 +2,91 @@
 {% block title %}Result - Fish Counting App{% endblock %}
 
 {% block content %}
-<div class="row mb-4 justify-content-center">
-  <!-- <div class="col-md-6">
-    <div class="card p-2 mb-3">
-      <h5 class="text-center">Original Image</h5>
-      <img src="{{ url_for('uploaded_file', filename=original_image) }}" class="img-fluid rounded">
-    </div>
-  </div> -->
+<div class="row mb-5 justify-content-center" data-aos="fade-up">
   <div class="col-md-6">
-    <div class="card p-2 mb-3">
-      <h5 class="text-center">Predicted Image</h5>
-      <img src="{{ url_for('predicted_file', filename=predicted_image) }}" class="img-fluid rounded">
+    <div class="card p-3">
+      <h5 class="text-center mb-3">Predicted Image</h5>
+      <img src="{{ url_for('predicted_file', filename=predicted_image) }}" class="img-fluid rounded shadow">
     </div>
   </div>
 </div>
 
-<!-- Summary Card -->
-<div class="row mb-4 justify-content-center">
+<div class="row mb-5 justify-content-center" data-aos="fade-up" data-aos-delay="100">
   <div class="col-md-8">
-    <div class="card text-center p-4 shadow-sm">
-      <h3>Fish Detected: <strong>{{ total_fish }}</strong></h3>
+    <div class="card text-center p-4 shadow" style="backdrop-filter: blur(6px);">
+      <h3>🐠 Fish Detected: <strong><span id="fishCount">0</span></strong></h3>
       <p class="mb-0">Processed at <strong>{{ timestamp }}</strong></p>
     </div>
   </div>
 </div>
 
-<!-- Species Breakdown -->
 {% if species_counts %}
-<div class="row mb-5 justify-content-center">
+<div class="row mb-5 justify-content-center" data-aos="fade-up" data-aos-delay="200">
   <div class="col-md-10">
-
-    <div class="card p-4 shadow mt-4">
-  <h4 class="mb-3">Species-wise Detection</h4>
-  <div style="height: 400px; position: relative;">
-    <canvas id="speciesChart"></canvas>
-  </div>
-</div>
-
-
+    <div class="card p-4 shadow" style="backdrop-filter: blur(6px);">
+      <h4 class="mb-4 text-center">Species-wise Detection</h4>
+      <div style="height: 400px;">
+        <canvas id="speciesChart"></canvas>
+      </div>
+    </div>
   </div>
 </div>
 {% endif %}
 
-<!-- Info -->
-<div class="row justify-content-center">
+<div class="row justify-content-center" data-aos="fade-up" data-aos-delay="300">
   <div class="col-md-10">
-    <div class="card p-4 shadow">
+    <div class="card p-4 shadow" style="backdrop-filter: blur(6px);">
       <h4 class="mb-3">How It Works</h4>
-      <p>This application uses advanced <strong>YOLOv8</strong> architecture to detect and count fish in your images. It has been trained on 13 different species, offering reliable predictions in varied underwater conditions.</p>
-      <p>For best results, upload well-lit and high-resolution images.</p>
-      <div class="text-center mt-4">
+      <p>This app uses <strong>YOLOv8</strong> to detect and count fish across 13 species, handling varied underwater conditions with precision.</p>
+      <p class="mt-4 text-center">
         <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg">Upload Another Image</a>
-      </div>
+      </p>
     </div>
   </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+  
+ document.addEventListener('DOMContentLoaded', function () {
+    const target = {{ total_fish | default(0) }};
+    let count = 0;
+    const step = Math.ceil(target / 50);
+    const el = document.getElementById('fishCount');
+    const interval = setInterval(() => {
+      count += step;
+      if (count >= target) {
+        el.innerText = target;
+        clearInterval(interval);
+      } else {
+        el.innerText = count;
+      }
+    }, 30);
+  });
+
+
   document.addEventListener('DOMContentLoaded', function () {
+    {% if species_counts %}
     const speciesData = {{ species_counts | tojson | safe }};
     const labels = Object.keys(speciesData);
     const data = Object.values(speciesData);
 
-    console.log("Chart Data:", speciesData);
-
-    const backgroundColors = labels.map((_, i) => {
-      const colors = [
-        'rgba(255, 99, 132, 0.7)', 'rgba(54, 162, 235, 0.7)', 'rgba(255, 206, 86, 0.7)',
-        'rgba(75, 192, 192, 0.7)', 'rgba(153, 102, 255, 0.7)', 'rgba(255, 159, 64, 0.7)',
-        'rgba(199, 199, 199, 0.7)', 'rgba(83, 102, 255, 0.7)', 'rgba(0, 191, 255, 0.7)',
-        'rgba(255, 99, 71, 0.7)', 'rgba(60, 179, 113, 0.7)', 'rgba(255, 140, 0, 0.7)',
-        'rgba(123, 104, 238, 0.7)'
-      ];
-      return colors[i % colors.length];
-    });
+    const colors = ['rgba(255,99,132,0.7)','rgba(54,162,235,0.7)','rgba(255,206,86,0.7)','rgba(75,192,192,0.7)','rgba(153,102,255,0.7)','rgba(255,159,64,0.7)','rgba(199,199,199,0.7)','rgba(83,102,255,0.7)','rgba(0,191,255,0.7)','rgba(255,99,71,0.7)','rgba(60,179,113,0.7)','rgba(255,140,0,0.7)','rgba(123,104,238,0.7)'];
 
     const ctx = document.getElementById('speciesChart').getContext('2d');
-    if (Chart.getChart("speciesChart")) {
-      Chart.getChart("speciesChart").destroy();
-    }
-
     new Chart(ctx, {
       type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          data: data,
-          backgroundColor: backgroundColors,
-          borderColor: backgroundColors.map(color => color.replace('0.7', '1')),
-          borderWidth: 1
-        }]
-      },
+      data: { labels, datasets: [{ data, backgroundColor: colors, borderColor: colors.map(c => c.replace('0.7','1')), borderWidth: 1 }] },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        scales: {
-          x: {
-            ticks: {
-              maxRotation: 45,
-              minRotation: 30
-            }
-          },
-          y: {
-            beginAtZero: true,
-            ticks: {
-              precision: 0
-            }
-          }
-        },
-        plugins: {
-          legend: {
-            display: false  // hides the "Detected Count" legend
-          }
-        }
+        scales: { x: { ticks: { maxRotation: 45, minRotation: 30 } }, y: { beginAtZero: true, ticks: { precision: 0 } } },
+        plugins: { legend: { display: false } }
       }
     });
+    {% endif %}
   });
+
 </script>
 {% endblock %}
